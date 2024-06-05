@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-mongo-depl
+spec:
+  replicas: 1
+  # selector=> how to deployment find the pods is actully crete
+  selector:
+    matchLabels:
+      app: auth-mongo
+  template:
+    # lables that applied to the pods
+    metadata:
+      labels:
+        app: auth-mongo
+    spec:
+      containers:
+        - name: auth-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-mongo-srv
+spec:
+  selector:
+    app: auth-mongo
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
